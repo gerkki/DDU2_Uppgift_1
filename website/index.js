@@ -23,8 +23,10 @@ const foundCity = lookForCity(targetCityName);
 
 if (foundCity == null) {
     h2.textContent = `${targetCityName} finns inte i databasen`;
+    document.title = "Not Found";
 } else {
     h2.textContent = `${foundCity.name} (${foundCity.country})`;
+    document.title = foundCity.name;
 }
 
 for (let city of cities) {
