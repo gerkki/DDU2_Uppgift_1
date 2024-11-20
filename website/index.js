@@ -14,6 +14,7 @@ function lookForCity(targetCityName) {
 const h2 = document.querySelector("h2");
 const h3 = document.querySelector("h3");
 const citiesDiv = document.getElementById("cities");
+const tableDiv = document.getElementById("table");
 
 // Recommended: Ask for the city name and then the rest of the code
 
@@ -23,6 +24,7 @@ const foundCity = lookForCity(targetCityName);
 
 if (foundCity == null) {
     h2.textContent = `${targetCityName} finns inte i databasen`;
+    h3.textContent = "";
     document.title = "Not Found";
 } else {
     h2.textContent = `${foundCity.name} (${foundCity.country})`;
