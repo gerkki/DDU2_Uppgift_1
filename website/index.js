@@ -32,5 +32,13 @@ if (foundCity == null) {
 }
 
 for (let city of cities) {
-    citiesDiv.innerHTML += `<p class="cityBox">${city.name}</p>`;
+    const cityElement = document.createElement("p");
+    cityElement.classList.add("cityBox");
+
+    if (city.name == targetCityName) {
+        cityElement.classList.add("target");
+    }
+
+    cityElement.textContent = city.name;
+    citiesDiv.appendChild(cityElement);
 }
