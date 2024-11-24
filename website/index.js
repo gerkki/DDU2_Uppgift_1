@@ -47,12 +47,44 @@ function findClosestCity(targetCity) {
     return { city: closestCity, distance: closestCityDistance };
 }
 
+function findFurthestCity(targetCity) {
+    let furthestCityDistance = 0;
+    let furthestCity = null;
+
+    for (let d of distances) {
+        // Kontrollera om avståndet gäller targetCity
+        if (d.city1 === targetCity.id || d.city2 === targetCity.id) {
+            // Hitta andra stadens ID
+            const otherCityId = d.city1 === targetCity.id ? d.city2 : d.city1;
+
+            // Leta upp staden med loop
+            let otherCity = null;
+            for (let city of cities) {
+                if (city.id === otherCityId) {
+                    otherCity = city;
+                    break; // Avsluta loopen när vi hittar staden
+                }
+            }
+
+            // Uppdatera staden längst bort om detta avstånd är längre
+            if (d.distance > furthestCityDistance) {
+                furthestCityDistance = d.distance;
+                furthestCity = otherCity;
+            }
+        }
+    }
+    return { city: furthestCity, distance: furthestCityDistance };
+}
+
 function markCityBox(cityObject, cityClass, distance = null) {
     const cityElements = document.querySelectorAll(".cityBox");
     for (let cityElement of cityElements) {
         if (cityElement.textContent === cityObject.name) {
             cityElement.classList.add(cityClass);
             if (cityClass == "closest" && distance !== null) {
+                cityElement.innerHTML += ` ligger ${distance} mil bort `;
+            }
+            if (cityClass == "furthest" && distance !== null) {
                 cityElement.innerHTML += ` ligger ${distance} mil bort `;
             }
         }
@@ -86,9 +118,11 @@ if (foundCity !== null) {
     h2.textContent = `${foundCity.name} (${foundCity.country})`;
     document.title = foundCity.name;
     markCityBox(foundCity, "target");
-    const { city: closestCity, distance: closestDistance } = findClosestCity(foundCity);
-    markCityBox(closestCity, "closest", closestDistance / 10);
-    h3.textContent = `Av städerna i databasen ligger ${closestCity.name} närmast och y längst bort`;
+    const { city: closestCity, distance: closestCityDistance } = findClosestCity(foundCity);
+    markCityBox(closestCity, "closest", closestCityDistance / 10);
+    const { city: furthestCity, distance: furthestCityDistance } = findFurthestCity(foundCity);
+    markCityBox(furthestCity, "furthest", furthestCityDistance / 10);
+    h3.textContent = `Av städerna i databasen ligger ${closestCity.name} närmast och ${furthestCity.name} längst bort`;
 }
 
 
