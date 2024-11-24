@@ -9,6 +9,19 @@ function createAllCityBoxes() {
     }
 }
 
+function createDistanceTable() {
+    const emptyColumn = document.createElement("p");
+    emptyColumn.classList.add("cell", "head_column");
+    tableDiv.appendChild(emptyColumn);
+
+    for (let city of cities) {
+        const columnHead = document.createElement("p");
+        columnHead.textContent = city.id;
+        columnHead.classList.add("cell", "head_column");
+        tableDiv.appendChild(columnHead);
+    }
+}
+
 function lookForCity(targetCityName) {
     for (let city of cities) {
         if (city.name == targetCityName) {
@@ -102,7 +115,7 @@ const tableDiv = document.getElementById("table");
 
 const allCities = createAllCityBoxes();
 
-// const completeTable = Här ska funktionen för tabellen anropas!
+const completeTable = createDistanceTable();
 
 const targetCityName = prompt("Vilken stad?");
 
