@@ -18,11 +18,43 @@ function lookForCity(targetCityName) {
     return null;
 }
 
-function markCityBox(cityObject, kindOfCity) {
+function findClosestCity(targetCity) {
+    let closestCityDistance = Infinity;
+    let closestCity = null;
+
+    for (let d of distances) {
+        // Kontrollera om avståndet gäller targetCity
+        if (d.city1 === targetCity.id || d.city2 === targetCity.id) {
+            // Hitta andra stadens ID
+            const otherCityId = d.city1 === targetCity.id ? d.city2 : d.city1;
+
+            // Leta upp staden med loop
+            let otherCity = null;
+            for (let city of cities) {
+                if (city.id === otherCityId) {
+                    otherCity = city;
+                    break; // Avsluta loopen när vi hittar staden
+                }
+            }
+
+            // Uppdatera närmaste stad om detta avstånd är kortare
+            if (d.distance < closestCityDistance) {
+                closestCityDistance = d.distance;
+                closestCity = otherCity;
+            }
+        }
+    }
+    return { city: closestCity, distance: closestCityDistance };
+}
+
+function markCityBox(cityObject, cityClass, distance = null) {
     const cityElements = document.querySelectorAll(".cityBox");
     for (let cityElement of cityElements) {
         if (cityElement.textContent === cityObject.name) {
-            cityElement.classList.add(kindOfCity);
+            cityElement.classList.add(cityClass);
+            if (cityClass == "closest" && distance !== null) {
+                cityElement.innerHTML += ` ligger ${distance} mil bort `;
+            }
         }
     }
 }
@@ -54,7 +86,9 @@ if (foundCity !== null) {
     h2.textContent = `${foundCity.name} (${foundCity.country})`;
     document.title = foundCity.name;
     markCityBox(foundCity, "target");
-    h3.textContent = `Av städerna i databasen ligger x närmast och y längst bort`;
+    const { city: closestCity, distance: closestDistance } = findClosestCity(foundCity);
+    markCityBox(closestCity, "closest", closestDistance / 10);
+    h3.textContent = `Av städerna i databasen ligger ${closestCity.name} närmast och y längst bort`;
 }
 
 
