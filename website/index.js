@@ -30,17 +30,20 @@ function createDistanceTable() {
         }
         tableDiv.appendChild(rowHead);
 
-        for (let city of cities) {
-            const columnHead = document.createElement("p");
-            columnHead.textContent = city.id;
-            if (city.id % 2 == 0) {
-                columnHead.classList.add("even_col");
+        for (let cityColumns of cities) {
+            const columnsTable = document.createElement("p");
+            columnsTable.textContent = cityColumns.id;
+            if (cityColumns.id % 2 == 0) {
+                columnsTable.classList.add("even_col");
+            }
+            if (cityColumns.id == cityRowHead.id) {
+                columnsTable.textContent = "";
             }
             if (cityRowHead.id % 2 == 0) {
-                columnHead.classList.add("even_row");
+                columnsTable.classList.add("even_row");
             }
-            columnHead.classList.add("cell");
-            tableDiv.appendChild(columnHead);
+            columnsTable.classList.add("cell");
+            tableDiv.appendChild(columnsTable);
         }
     }
 }
