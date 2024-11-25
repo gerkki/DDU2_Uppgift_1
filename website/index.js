@@ -11,14 +11,37 @@ function createAllCityBoxes() {
 
 function createDistanceTable() {
     const emptyColumn = document.createElement("p");
-    emptyColumn.classList.add("cell", "head_column");
+    emptyColumn.classList.add("cell");
     tableDiv.appendChild(emptyColumn);
 
-    for (let city of cities) {
+    for (let cityColumnHead of cities) {
         const columnHead = document.createElement("p");
-        columnHead.textContent = city.id;
+        columnHead.textContent = cityColumnHead.id;
         columnHead.classList.add("cell", "head_column");
         tableDiv.appendChild(columnHead);
+    }
+
+    for (let cityRowHead of cities) {
+        const rowHead = document.createElement("p");
+        rowHead.textContent = `${cityRowHead.id}-${cityRowHead.name}`;
+        rowHead.classList.add("cell", "head_row");
+        if (cityRowHead.id % 2 == 0) {
+            rowHead.classList.add("even_row");
+        }
+        tableDiv.appendChild(rowHead);
+
+        for (let city of cities) {
+            const columnHead = document.createElement("p");
+            columnHead.textContent = city.id;
+            if (city.id % 2 == 0) {
+                columnHead.classList.add("even_col");
+            }
+            if (cityRowHead.id % 2 == 0) {
+                columnHead.classList.add("even_row");
+            }
+            columnHead.classList.add("cell");
+            tableDiv.appendChild(columnHead);
+        }
     }
 }
 
@@ -137,5 +160,3 @@ if (foundCity !== null) {
     markCityBox(furthestCity, "furthest", furthestCityDistance / 10);
     h3.textContent = `Av städerna i databasen ligger ${closestCity.name} närmast och ${furthestCity.name} längst bort`;
 }
-
-
