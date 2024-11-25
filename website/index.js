@@ -32,7 +32,24 @@ function createDistanceTable() {
 
         for (let cityColumns of cities) {
             const columnsTable = document.createElement("p");
-            columnsTable.textContent = cityColumns.id;
+
+            let distance = null;
+            for (let d of distances) {
+                if (
+                    (d.city1 === cityRowHead.id && d.city2 === cityColumns.id) ||
+                    (d.city2 === cityRowHead.id && d.city1 === cityColumns.id)
+                ) {
+                    distance = d;
+                    break;
+                }
+            }
+
+            if (distance !== null) {
+                columnsTable.textContent = distance.distance / 10;
+            } else {
+                columnsTable.textContent = "";
+            }
+
             if (cityColumns.id % 2 == 0) {
                 columnsTable.classList.add("even_col");
             }
