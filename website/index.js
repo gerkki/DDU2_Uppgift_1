@@ -1,5 +1,3 @@
-// Recommended: All functions declared here
-
 function createAllCityBoxes() {
     for (let city of cities) {
         const cityElement = document.createElement("p");
@@ -46,8 +44,6 @@ function createDistanceTable() {
 
             if (distance !== null) {
                 columnsTable.textContent = distance.distance / 10;
-            } else {
-                columnsTable.textContent = "";
             }
 
             if (cityColumns.id % 2 == 0) {
@@ -74,26 +70,27 @@ function lookForCity(targetCityName) {
     return null;
 }
 
-function findClosestCity(targetCity) {
+function findClosestCity(foundCity) {
     let closestCityDistance = Infinity;
     let closestCity = null;
 
     for (let d of distances) {
-        // Kontrollera om avståndet gäller targetCity
-        if (d.city1 === targetCity.id || d.city2 === targetCity.id) {
-            // Hitta andra stadens ID
-            const otherCityId = d.city1 === targetCity.id ? d.city2 : d.city1;
+        if (d.city1 === foundCity.id || d.city2 === foundCity.id) {
+            let otherCityId;
+            if (d.city1 === foundCity.id) {
+                otherCityId = d.city2;
+            } else {
+                otherCityId = d.city1;
+            }
 
-            // Leta upp staden med loop
             let otherCity = null;
             for (let city of cities) {
                 if (city.id === otherCityId) {
                     otherCity = city;
-                    break; // Avsluta loopen när vi hittar staden
+                    break;
                 }
             }
 
-            // Uppdatera närmaste stad om detta avstånd är kortare
             if (d.distance < closestCityDistance) {
                 closestCityDistance = d.distance;
                 closestCity = otherCity;
@@ -103,26 +100,27 @@ function findClosestCity(targetCity) {
     return { city: closestCity, distance: closestCityDistance };
 }
 
-function findFurthestCity(targetCity) {
-    let furthestCityDistance = 0;
+function findFurthestCity(foundCity) {
+    let furthestCityDistance = -Infinity;
     let furthestCity = null;
 
     for (let d of distances) {
-        // Kontrollera om avståndet gäller targetCity
-        if (d.city1 === targetCity.id || d.city2 === targetCity.id) {
-            // Hitta andra stadens ID
-            const otherCityId = d.city1 === targetCity.id ? d.city2 : d.city1;
+        if (d.city1 === foundCity.id || d.city2 === foundCity.id) {
+            let otherCityId;
+            if (d.city1 === foundCity.id) {
+                otherCityId = d.city2;
+            } else {
+                otherCityId = d.city1;
+            }
 
-            // Leta upp staden med loop
             let otherCity = null;
             for (let city of cities) {
                 if (city.id === otherCityId) {
                     otherCity = city;
-                    break; // Avsluta loopen när vi hittar staden
+                    break;
                 }
             }
 
-            // Uppdatera staden längst bort om detta avstånd är längre
             if (d.distance > furthestCityDistance) {
                 furthestCityDistance = d.distance;
                 furthestCity = otherCity;
@@ -147,14 +145,10 @@ function markCityBox(cityObject, cityClass, distance = null) {
     }
 }
 
-// Recommended: constants with references to existing HTML-elements
-
 const h2 = document.querySelector("h2");
 const h3 = document.querySelector("h3");
 const citiesDiv = document.getElementById("cities");
 const tableDiv = document.getElementById("table");
-
-// Recommended: Ask for the city name and then the rest of the code
 
 const allCities = createAllCityBoxes();
 
